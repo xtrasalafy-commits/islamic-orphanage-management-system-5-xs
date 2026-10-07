@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Avatar, Badge, Button, cx } from "@/components/ui";
 import { hijriToday } from "@/lib/format";
 
@@ -35,10 +35,6 @@ export default function Shell({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   const groups: NavGroup[] = [
     {
@@ -107,6 +103,7 @@ export default function Shell({
                     key={item.href}
                     href={item.href}
                     title={item.description}
+                    onClick={() => setOpen(false)}
                     className={cx(
                       "group flex items-center gap-3 rounded-xl px-2.5 py-2.5 text-sm font-semibold transition",
                       active

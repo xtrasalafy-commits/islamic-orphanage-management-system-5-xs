@@ -741,6 +741,21 @@ function defaultsFor(resource: ResourceKey): Record<string, string> {
   return { ...values, ...preferred[resource] };
 }
 
+function buildInitialValues(
+  resource: ResourceKey,
+  editing: Row | null,
+): Record<string, string> {
+  if (!editing) return defaultsFor(resource);
+  const next: Record<string, string> = {};
+  for (const field of RESOURCE_FIELDS[resource]) {
+    next[field.name] =
+      editing[field.name] === null || editing[field.name] === undefined
+        ? ""
+        : String(editing[field.name]);
+  }
+  return next;
+}
+
 function FormModal({
   resource,
   open,
@@ -757,25 +772,12 @@ function FormModal({
   onSaved: (values: Record<string, string>, created: boolean) => Promise<void>;
 }) {
   const fields = RESOURCE_FIELDS[resource];
-  const [values, setValues] = useState<Record<string, string>>(() => defaultsFor(resource));
+  const [values, setValues] = useState<Record<string, string>>(() =>
+    buildInitialValues(resource, editing),
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    setErrors({});
-    setServerError(null);
-    if (editing) {
-      const next: Record<string, string> = {};
-      for (const field of fields) {
-        next[field.name] = editing[field.name] === null || editing[field.name] === undefined ? "" : String(editing[field.name]);
-      }
-      setValues(next);
-    } else {
-      setValues(defaultsFor(resource));
-    }
-  }, [open, editing, fields, resource]);
 
   function optionsFor(field: FieldSpec): Option[] {
     if (field.type === "ref-anak") return refs.anakOptions;
@@ -916,6 +918,11 @@ export default function ResourceView({
   const toast = useToast();
 
   const [rows, setRows] = useState<Row[]>(initialRows);
+  const [rowsSource, setRowsSource] = useState<Row[]>(initialRows);
+  if (rowsSource !== initialRows) {
+    setRowsSource(initialRows);
+    setRows(initialRows);
+  }
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [formOpen, setFormOpen] = useState(false);
@@ -931,10 +938,6 @@ export default function ResourceView({
       mounted.current = false;
     };
   }, []);
-
-  useEffect(() => {
-    setRows(initialRows);
-  }, [initialRows]);
 
   const ctx: Ctx = useMemo(
     () => ({
@@ -1315,6 +1318,7 @@ export default function ResourceView({
       </Card>
 
       <FormModal
+        key={formOpen ? (editing ? `edit-${editing.id}` : "new") : "closed"}
         resource={resource}
         open={formOpen}
         editing={editing}

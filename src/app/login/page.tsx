@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import LoginForm from "./login-form";
 import { getSessionUser } from "@/lib/auth";
@@ -17,14 +16,8 @@ export default async function LoginPage() {
       {/* Panel narasi */}
       <section className="relative flex flex-1 flex-col justify-between overflow-hidden bg-brand-900 px-8 py-10 text-white lg:px-14 lg:py-14">
         <div className="pattern-islamic absolute inset-0" />
-        <Image
-          src="/images/panti-hero.jpg"
-          alt="Anak asuh belajar Al-Qur'an bersama"
-          fill
-          priority
-          sizes="50vw"
-          className="object-cover opacity-25 mix-blend-luminosity"
-        />
+        <div className="absolute -top-20 -right-16 h-72 w-72 rounded-full bg-gold-400/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 h-64 w-64 rounded-full bg-brand-500/10 blur-3xl" />
         <div className="absolute inset-0 bg-gradient-to-br from-brand-950/90 via-brand-900/70 to-brand-800/60" />
 
         <div className="relative">
