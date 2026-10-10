@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import TrakteerWidget from "@/components/trakteer-widget";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="id" className={jakarta.variable}>
       <body className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
         {children}
+        <TrakteerWidget />
       </body>
     </html>
   );

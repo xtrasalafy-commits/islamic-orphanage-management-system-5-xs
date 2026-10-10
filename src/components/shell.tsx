@@ -228,7 +228,22 @@ export default function Shell({
         </main>
 
         <footer className="border-t border-slate-200/80 bg-white px-4 py-4 text-center text-xs text-slate-400 sm:px-6">
-          SIMPANTI · Amanah mengelola kebutuhan dasar &amp; perlindungan anak · {new Date().getFullYear()}
+          <div className="flex flex-col items-center gap-1.5 sm:flex-row sm:justify-center sm:gap-2.5">
+            <span>
+              SIMPANTI · Amanah mengelola kebutuhan dasar &amp; perlindungan anak ·{" "}
+              {new Date().getFullYear()}
+            </span>
+            <span className="hidden sm:inline">·</span>
+            <a
+              href="/source-code.zip"
+              download
+              className="font-semibold text-brand-600 transition hover:text-brand-700 hover:underline"
+            >
+              ⬇ Download source code
+            </a>
+            <span className="hidden sm:inline">·</span>
+            <span>Open Source oleh MZF - 2026</span>
+          </div>
         </footer>
       </div>
     </div>
